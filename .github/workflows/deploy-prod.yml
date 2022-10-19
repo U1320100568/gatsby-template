@@ -1,0 +1,65 @@
+# This is a basic workflow that is manually triggered
+
+name: Deploy Production Workflow
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    inputs:
+      stage:
+        description: 'Production'
+        default: 'prod'
+        required: true
+
+  # https://kontent.ai/blog/how-to-trigger-github-action-using-webhook-with-no-code
+  repository_dispatch:
+    types:
+      - webhook
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  deploy-sls:
+    env:
+      STAGE: ${{ github.event.inputs.stage == 'prod' && 'prod' || 'stg' }}
+      AWS_ACCESS_KEY_ID: ${{ github.event.inputs.stage == 'prod' && secrets.PROD_AWS_ACCESS_KEY_ID || secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ github.event.inputs.stage == 'prod' && secrets.PROD_AWS_SECRET_ACCESS_KEY || secrets.AWS_SECRET_ACCESS_KEY }}
+      S3_BUCKET_REGION: ap-northeast-1
+      S3_BUCKET: ${{ github.event.inputs.stage == 'prod' && secrets.PROD_S3_BUCKET || secrets.STG_S3_BUCKET }}
+      CLOUDFRONT_DISTRIBUTION_ID: ${{ github.event.inputs.stage == 'prod' && secrets.PROD_CLOUDFRONT_DISTRIBUTION_ID || secrets.STG_CLOUDFRONT_DISTRIBUTION_ID }}
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      # https://www.voorhoede.nl/en/blog/super-fast-npm-install-on-github-actions/
+      - name: cache dependencies
+        id: cache
+        uses: actions/cache@v2
+        with:
+          path: ./node_modules
+          key: modules-${{ hashFiles('package-lock.json') }}
+
+      - name: install dependencies
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: npm install
+
+      - name: build the app
+        run: |
+          npm run config:${{ env.STAGE }}
+          npm run build
+      - name: deploy
+        uses: reggionick/s3-deploy@v3
+        with:
+          folder: public
+          bucket: ${{ env.S3_BUCKET }}
+          bucket-region: ${{ env.S3_BUCKET_REGION }}
+          dist-id: ${{ env.CLOUDFRONT_DISTRIBUTION_ID }}
+          invalidation: /*
