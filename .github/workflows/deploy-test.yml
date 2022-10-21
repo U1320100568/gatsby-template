@@ -30,15 +30,15 @@ jobs:
       - name: Extract Branch
         run: |
              echo ${{ env.BRANCH }}
-             echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+            #  echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
     
-      - name: Extract Project Name
-        run: |
-             BRANCH="${{ env.BRANCH }}"
-             echo $BRANCH
-             PROJECT="PRJ=${BRANCH/-prod}"
-             echo $PROJECT >> $GITHUB_ENV
-             echo ${{ env.PROJECT }}
+      # - name: Extract Project Name
+      #   run: |
+      #        BRANCH="${{ env.BRANCH }}"
+      #        echo $BRANCH
+      #        PROJECT="PRJ=${BRANCH/-prod}"
+      #        echo $PROJECT >> $GITHUB_ENV
+      #        echo ${{ env.PROJECT }}
 
       
