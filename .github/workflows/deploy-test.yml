@@ -47,8 +47,6 @@ jobs:
         if: github.event.action == 'webhook'
         run: echo "BRANCH=${{ github.event.client_payload.branch }}" >> $GITHUB_ENV
 
-      - uses: actions/checkout@v3
-
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
