@@ -1,0 +1,41 @@
+# This is a basic workflow that is manually triggered
+
+name: Test Deploy
+
+# Controls when the action will run. Workflow runs when manually triggered using the UI
+# or API.
+on:
+  workflow_dispatch:
+    # inputs:
+    #   stage:
+    #     description: 'STAGE'
+    #     default: 'prod'
+    #     required: true
+
+  # https://kontent.ai/blog/how-to-trigger-github-action-using-webhook-with-no-code
+  repository_dispatch:
+  #   types:
+  #     - webhook
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "greet"
+  deploy-sls:
+    env:
+      
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: Extract Branch
+        run: echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+
+    
+      - name: Extract Project Name
+        run: |
+             BRANCH="${{ env.BRANCH }}"
+             echo $BRANCH
+             PROJECT="PRJ=${BRANCH/-prod}"
+             echo $PROJECT >> $GITHUB_ENV
+             echo "${{ env.PROJECT }}"
+
+      
