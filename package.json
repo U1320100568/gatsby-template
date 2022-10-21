@@ -17,7 +17,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
     "tsc": "tsc",
-    "stats": "REV_STATS=1 NODE_OPTIONS=--max_old_space_size=4096 npm run build"
+    "stats": "REV_STATS=1 NODE_OPTIONS=--max_old_space_size=4096 npm run build",
+    "test-deploy": "echo this is master" 
   },
   "dependencies": {
     "antd": "^4.15.6",
