@@ -21,13 +21,16 @@ on:
 jobs:
   # This workflow contains a single job called "greet"
   deploy-sls:
-    # env:
-      
+    env:
+      BRANCH: ${GITHUB_REF#refs/heads/}
+
     runs-on: ubuntu-latest
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       - name: Extract Branch
-        run: echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+        run: |
+             echo ${{ env.BRANCH }}
+             echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
     
       - name: Extract Project Name
