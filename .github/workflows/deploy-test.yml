@@ -1,7 +1,7 @@
 # This is a basic workflow that is manually triggered
 
 name: Test Deploy
-run-name: Deploy ${{github.ref_name}} to by @${{ github.actor }}
+run-name: Deploy ${{github.event.action || github.ref_name}} by @${{ github.actor }}
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -31,7 +31,7 @@ jobs:
       - name: Checkout
         if: github.event.action == 'webhook'
         uses: actions/checkout@v3
-        with: ${{ github.event.client_payload.branch }}
+        with: "${{ github.event.client_payload.branch }}"
 
       - name: Extract Branch
         run: |
