@@ -1,6 +1,7 @@
 # This is a basic workflow that is manually triggered
 
 name: Test Deploy
+run-name: Deploy to by @${{ github.actor }}
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -29,7 +30,7 @@ jobs:
     steps:
       - name: Extract Branch
         run: |
-             echo ${{ env.BRANCH }}
+             echo branch = ${{ env.BRANCH }}
             #  echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
     
