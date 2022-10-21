@@ -1,7 +1,7 @@
 # This is a basic workflow that is manually triggered
 
 name: Test Deploy
-run-name: Deploy to by @${{ github.actor }}
+run-name: Deploy ${{github.ref_name}} from ${{ github.event.action }} to by @${{ github.actor }}
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
