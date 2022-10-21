@@ -40,12 +40,14 @@ jobs:
              echo branch = ${{ env.BRANCH }}
              echo ${GITHUB_REF#refs/heads/}
              echo ${{ github.ref }}
-             echo ${{ github.head_ref }}
+             echo ${{ github.ref_name }}
              echo ${{ github.base_ref }}
 
       - name: Extract Branch From Webhook
         if: github.event.action == 'webhook'
         run: echo "BRANCH=${{ github.event.client_payload.branch }}" >> $GITHUB_ENV
+
+      - uses: actions/checkout@v3
 
       - uses: actions/setup-node@v2
         with:
