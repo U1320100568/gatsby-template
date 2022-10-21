@@ -39,6 +39,9 @@ jobs:
              echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
              echo branch = ${{ env.BRANCH }}
              echo ${GITHUB_REF#refs/heads/}
+             echo ${{ github.ref }}
+             echo ${{ github.head_ref }}
+             echo ${{ github.base_ref }}
 
       - name: Extract Branch From Webhook
         if: github.event.action == 'webhook'
