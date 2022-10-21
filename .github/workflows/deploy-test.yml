@@ -15,8 +15,8 @@ on:
 
   # https://kontent.ai/blog/how-to-trigger-github-action-using-webhook-with-no-code
   repository_dispatch:
-  #   types:
-  #     - webhook
+    types:
+      - webhook
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -33,6 +33,9 @@ jobs:
              echo branch = ${{ env.BRANCH }}
             #  echo "BRANCH=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
 
+      - name: Extract Branch From Webhook
+        if: github.event.action == 'webhook'
+        run: echo "BRANCH=${{ github.event.client_payload.branch }}" >> $GITHUB_ENV
     
       # - name: Extract Project Name
       #   run: |
