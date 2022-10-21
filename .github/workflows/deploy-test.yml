@@ -31,7 +31,8 @@ jobs:
       - name: Checkout
         if: github.event.action == 'webhook'
         uses: actions/checkout@v3
-        with: "${{ github.event.client_payload.branch }}"
+        with: 
+          ref: ${{ github.event.client_payload.branch }}
 
       - name: Extract Branch
         run: |
