@@ -56,8 +56,8 @@ jobs:
 
       - name: Run Script
         run: |
-            npm run test-deploy
-            echo $BRANCH
+             npm run test-deploy
+             echo $BRANCH
     
       # - name: Extract Project Name
       #   run: |
