@@ -16,7 +16,7 @@ on:
   # https://kontent.ai/blog/how-to-trigger-github-action-using-webhook-with-no-code
   repository_dispatch:
     types:
-      - webhook
+      - test
   push: 
     branches: 
       - '!master'
