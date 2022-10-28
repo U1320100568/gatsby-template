@@ -55,9 +55,7 @@ jobs:
           node-version: '14'
 
       - name: Run Script
-        run: |
-             npm run test-deploy
-             echo $BRANCH
+        run: npm run test-deploy
     
       # - name: Extract Project Name
       #   run: |
