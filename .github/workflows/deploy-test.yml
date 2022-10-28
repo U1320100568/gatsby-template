@@ -1,7 +1,7 @@
 # This is a basic workflow that is manually triggered
 
 name: Test Deploy
-run-name: Deploy ${{github.event.action || github.ref_name}} by @${{ github.actor }}
+run-name: Deploy ${{github.event.action && github.event.client_payload.branch || github.ref_name}} by @${{ github.actor }}
 
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
@@ -16,10 +16,10 @@ on:
   # https://kontent.ai/blog/how-to-trigger-github-action-using-webhook-with-no-code
   repository_dispatch:
     types:
-      - webhook
+      - test
   push: 
     branches: 
-      - '!master'
+      - 'release/*'
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -39,9 +39,11 @@ jobs:
              echo ${{ github.ref }}
              echo ${{ github.ref_name }}
              echo ${{ github.base_ref }}
+      
+      - run: echo event '${{ toJSON(github.event) }}'
 
       - name: Extract Branch From Webhook
-        if: github.event.action == 'webhook'
+        if: github.event.action == 'test'
         run: echo "BRANCH=${{ github.event.client_payload.branch }}" >> $GITHUB_ENV
 
       - name: Checkout
