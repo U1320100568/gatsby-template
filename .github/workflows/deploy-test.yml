@@ -39,6 +39,8 @@ jobs:
              echo ${{ github.ref }}
              echo ${{ github.ref_name }}
              echo ${{ github.base_ref }}
+      
+      - run: echo event ${{ toJSON(github.event) }}
 
       - name: Extract Branch From Webhook
         if: github.event.action == 'webhook'
